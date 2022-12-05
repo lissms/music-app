@@ -1,7 +1,7 @@
 import { typography } from '$/styles/themes/typography';
 import styled from 'styled-components';
 
-import { CardSongProps } from './types';
+import { ImageProps } from './types';
 
 export const Container = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ export const ContainerSong = styled.div`
   align-self: center;
 `;
 
-export const ContainerImage = styled.div<CardSongProps>`
+export const ContainerImage = styled.div<ImageProps>`
   width: 8.75rem;
   height: 8.75rem;
   border-radius: 0.75rem;
