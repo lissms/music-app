@@ -23,6 +23,7 @@ export default {
     description: data.description,
     genre: data.genre,
     author: data.author,
+    onClick: () => {},
   },
 } as Meta;
 

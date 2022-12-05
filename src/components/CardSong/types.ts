@@ -9,4 +9,6 @@ export type CardSongProps = {
   genre: string;
   author: string;
   isFavorite: boolean;
+  id: number;
+  toggleFavorite: (isSelectedId: number) => void;
 };
