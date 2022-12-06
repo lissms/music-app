@@ -25,6 +25,7 @@ export const ContainerImage = styled.div<ImageProps>`
 export const Information = styled.div`
   width: 37.688rem;
   height: 5.75rem;
+  overflow: scroll;
   & p {
     margin-bottom: 0.25rem;
   }
