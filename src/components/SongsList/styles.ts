@@ -16,3 +16,8 @@ export const Title = styled.h2`
   margin-bottom: 1.5rem;
   margin-top: 3rem;
 `;
+export const List = styled.ul`
+  display: inline-block;
+  width: 100%;
+  list-style: none;
+`;

@@ -2,8 +2,9 @@ import { CardSong } from '$/components/CardSong';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { Container, Title } from './styles';
-import type { SongsListProps } from './types';
+import { useLocalStorage } from '../../../useLocalStorage';
+import { Container, List, Title } from './styles';
+import type { Data, SongsListProps } from './types';
 
 const SONGS_QUERY = gql`
   {
@@ -31,7 +32,7 @@ const SONGS_QUERY = gql`
 `;
 
 interface UseQueryProps {
-  data: unknown;
+  data: Data;
   loading: boolean;
   error: ApolloError | undefined;
 }
@@ -62,9 +63,12 @@ interface MappedSong {
   isFavorite: boolean;
 }
 
+// TODO: control isLoading and error
+
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
-  const { data, loading, error } = useQuery<UseQueryProps>(SONGS_QUERY);
+
+  const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
@@ -76,33 +80,36 @@ export const SongsList = ({}: SongsListProps) => {
       id: song.id,
       image: song.image,
       songName: song.name,
-      isFavorite: false,
+      isFavorite: false, // su valor dependerá si song.id está en el localstorage o no
     }));
     setSongs(mapperData);
   }, [data]);
 
-  console.log('Songs', songs);
-  console.log('data1', data);
-  console.log('loading', loading);
-  console.log('error', error);
+  // const setFavoriteIten = () => {};
 
-  //   const toggleFavorite = (isTheSelectedId: number) => {
-  //     const modifiedSongsList = songs?.map((song) => ({
-  //       ...song,
-  //       isFavorite: song.id === isTheSelectedId,
-  //     }));
-  //     setSongs(modifiedSongsList);
-  //   };
+  const toggleFavorite = (selectedId: number) => {
+    const modifiedSongsList = songs?.map((song) => {
+      if (song.id === selectedId) {
+        // añadir id al local storage
 
-  const toggleFavorite = (isTheSelectedId: number) => {
-    const modifiedSongsList = songs?.map((song) =>
-      song.id === isTheSelectedId
-        ? {
-            ...song,
-            isFavorite: !song.isFavorite,
-          }
-        : song,
-    );
+        const favoriteIdList =
+          (JSON.parse(
+            String(localStorage.getItem('idFavorite')),
+          ) as number[]) || [];
+
+        favoriteIdList.push(selectedId);
+        localStorage.setItem('idFavorite', JSON.stringify(favoriteIdList));
+
+        return {
+          ...song,
+          isFavorite: !song.isFavorite,
+        };
+      } else {
+        // eliminar id del local storage
+        return song;
+      }
+    });
+
     setSongs(modifiedSongsList);
   };
 
@@ -111,21 +118,22 @@ export const SongsList = ({}: SongsListProps) => {
   return (
     <Container>
       <Title>Featured songs</Title>
-
-      {songs?.map((item) => (
-        <div style={{ width: '100%' }} key={item.id}>
-          <CardSong
-            image={item.image}
-            name={item.songName}
-            description={item.description}
-            genre={item.genre}
-            author={item.author}
-            isFavorite={item.isFavorite}
-            id={item.id}
-            toggleFavorite={toggleFavorite}
-          />
-        </div>
-      ))}
+      <List>
+        {songs?.map((item) => (
+          <li key={item.id}>
+            <CardSong
+              image={item.image}
+              name={item.songName}
+              description={item.description}
+              genre={item.genre}
+              author={item.author}
+              isFavorite={item.isFavorite}
+              id={item.id}
+              toggleFavorite={toggleFavorite}
+            />
+          </li>
+        ))}
+      </List>
     </Container>
   );
 };
