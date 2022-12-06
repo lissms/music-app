@@ -47,32 +47,33 @@ export const Information = styled.div`
 
 export const Details = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   display: flex;
-  width: 8.125rem;
   height: 2rem;
   margin-top: 12px;
 `;
 export const Duration = styled.p`
-  color: red;
   ${typography.caption};
   color: ${({ theme }) => theme.color.grayscale700};
   font-weight: ${({ theme }) => theme.weight.regular};
+  margin-right: 0.75rem;
 `;
 
 export const Genre = styled.div`
   border-radius: 2.938rem;
-  width: 2.688rem;
   height: 1.25rem;
   background-color: ${({ theme }) => theme.color.malibu100};
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 0.75rem;
+  padding: 0.25rem 0.5rem;
   & .genre {
     ${typography.caption};
     color: ${({ theme }) => theme.color.grayscale900};
     font-weight: ${({ theme }) => theme.weight.regular};
+    text-transform: capitalize;
   }
 `;
 export const ButtonPlay = styled.button`
@@ -89,6 +90,7 @@ export const ButtonPlay = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 0.75rem;
 `;
 export const ButtonFavorite = styled.button`
   height: 20px;

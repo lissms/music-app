@@ -80,7 +80,7 @@ export const SongsList = ({}: SongsListProps) => {
       audio: song.audio.url,
       author: song.author.name,
       description: song.description,
-      genre: song.genre,
+      genre: song.genre.toLowerCase().replace('_', ' '),
       id: song.id,
       image: song.image,
       songName: song.name,
