@@ -14,6 +14,9 @@ export const ContainerSong = styled.div`
   justify-content: center;
   align-self: center;
 `;
+export const ContainerInfoDateail = styled.div`
+  padding-left: 1.25rem;
+`;
 
 export const ContainerImage = styled.div<ImageProps>`
   width: 8.75rem;

@@ -64,6 +64,7 @@ interface MappedSong {
 
 // TODO: control isLoading and error
 // TODO: refactorizar pasar logica y ts a otro archivo
+// TODO: STORYBOOK
 
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);

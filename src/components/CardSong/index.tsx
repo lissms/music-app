@@ -8,6 +8,7 @@ import {
   ButtonPlay,
   Container,
   ContainerImage,
+  ContainerInfoDateail,
   ContainerSong,
   Details,
   Duration,
@@ -29,7 +30,7 @@ export const CardSong = ({
   <Container>
     <ContainerSong>
       <ContainerImage image={image} />
-      <div style={{ paddingLeft: '1.25rem' }}>
+      <ContainerInfoDateail>
         <Information>
           <p className="name">{name}</p>
           <p className="author">{author}</p>
@@ -44,7 +45,7 @@ export const CardSong = ({
             <p className="genre">{genre}</p>
           </Genre>
         </Details>
-      </div>
+      </ContainerInfoDateail>
     </ContainerSong>
     <ButtonFavorite onClick={() => toggleFavorite(id)}>
       {isFavorite ? <HeartIcon /> : <HeartAddIcon />}
