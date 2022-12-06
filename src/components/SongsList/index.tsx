@@ -1,6 +1,6 @@
 import { CardSong } from '$/components/CardSong';
-import { gql, useQuery } from '@apollo/client';
-import React from 'react';
+import { ApolloError, gql, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
 
 import { Container, Title } from './styles';
 import type { SongsListProps } from './types';
@@ -29,13 +29,48 @@ const SONGS_QUERY = gql`
     }
   }
 `;
-export const SongsList = ({}: SongsListProps) => {
-  const { data, loading, error } = useQuery(SONGS_QUERY);
 
-  const mapperData = () =>
-    data?.songs?.songs.map((song) => ({
+interface UseQueryProps {
+  data: unknown;
+  loading: boolean;
+  error: ApolloError | undefined;
+}
+interface AudioProps {
+  id: number;
+  url: string;
+}
+interface AuthorProps {
+  name: string;
+}
+interface Song {
+  audio: AudioProps;
+  author: AuthorProps;
+  description: string;
+  genre: string;
+  id: number;
+  image: string;
+  name: string;
+}
+interface MappedSong {
+  audio: string;
+  author: string;
+  description: string;
+  genre: string;
+  id: number;
+  image: string;
+  songName: string;
+  isFavorite: boolean;
+}
+
+export const SongsList = ({}: SongsListProps) => {
+  const [songs, setSongs] = useState<MappedSong[]>([]);
+  const { data, loading, error } = useQuery<UseQueryProps>(SONGS_QUERY);
+
+  useEffect(() => {
+    const songsList = data?.songs?.songs as Song[];
+    const mapperData = songsList?.map((song) => ({
       audio: song.audio.url,
-      autor: song.author.name,
+      author: song.author.name,
       description: song.description,
       genre: song.genre,
       id: song.id,
@@ -43,27 +78,49 @@ export const SongsList = ({}: SongsListProps) => {
       songName: song.name,
       isFavorite: false,
     }));
+    setSongs(mapperData);
+  }, [data]);
 
-  console.log('mapperData', mapperData());
-  console.log('data1', data?.songs?.songs);
+  console.log('Songs', songs);
+  console.log('data1', data);
   console.log('loading', loading);
   console.log('error', error);
 
-  const toggleFavorite = (isTheSelectedId: number) => isTheSelectedId;
+  //   const toggleFavorite = (isTheSelectedId: number) => {
+  //     const modifiedSongsList = songs?.map((song) => ({
+  //       ...song,
+  //       isFavorite: song.id === isTheSelectedId,
+  //     }));
+  //     setSongs(modifiedSongsList);
+  //   };
+
+  const toggleFavorite = (isTheSelectedId: number) => {
+    const modifiedSongsList = songs?.map((song) =>
+      song.id === isTheSelectedId
+        ? {
+            ...song,
+            isFavorite: !song.isFavorite,
+          }
+        : song,
+    );
+    setSongs(modifiedSongsList);
+  };
+
+  console.log('songs', songs);
 
   return (
     <Container>
       <Title>Featured songs</Title>
 
-      {mapperData()?.map((item) => (
+      {songs?.map((item) => (
         <div style={{ width: '100%' }} key={item.id}>
           <CardSong
             image={item.image}
-            name={item.name}
+            name={item.songName}
             description={item.description}
             genre={item.genre}
             author={item.author}
-            isFavorite={false}
+            isFavorite={item.isFavorite}
             id={item.id}
             toggleFavorite={toggleFavorite}
           />

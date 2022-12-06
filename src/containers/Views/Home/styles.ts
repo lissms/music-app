@@ -1,3 +1,4 @@
+import { CardSong as DefaultCardSong } from '$/components/CardSong';
 import { SearchInput as DefaultSearchInput } from '$/components/SearchInput';
 import styled from 'styled-components';
 
