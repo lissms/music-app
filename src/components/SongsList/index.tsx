@@ -2,7 +2,6 @@ import { CardSong } from '$/components/CardSong';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 
-import { useLocalStorage } from '../../../useLocalStorage';
 import { Container, List, Title } from './styles';
 import type { Data, SongsListProps } from './types';
 
@@ -64,14 +63,19 @@ interface MappedSong {
 }
 
 // TODO: control isLoading and error
+// TODO: refactorizar pasar logica y ts a otro archivo
 
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
-
   const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
+
+    const localStorageList =
+      (JSON.parse(String(localStorage.getItem('idFavorite'))) as number[]) ||
+      [];
+
     const mapperData = songsList?.map((song) => ({
       audio: song.audio.url,
       author: song.author.name,
@@ -80,40 +84,48 @@ export const SongsList = ({}: SongsListProps) => {
       id: song.id,
       image: song.image,
       songName: song.name,
-      isFavorite: false, // su valor dependerá si song.id está en el localstorage o no
+      isFavorite: localStorageList.some((id) => id === song.id),
     }));
     setSongs(mapperData);
   }, [data]);
 
-  // const setFavoriteIten = () => {};
-
   const toggleFavorite = (selectedId: number) => {
     const modifiedSongsList = songs?.map((song) => {
       if (song.id === selectedId) {
-        // añadir id al local storage
+        if (song.isFavorite) {
+          const favoriteIdList =
+            (JSON.parse(
+              String(localStorage.getItem('idFavorite')),
+            ) as number[]) || [];
 
-        const favoriteIdList =
-          (JSON.parse(
-            String(localStorage.getItem('idFavorite')),
-          ) as number[]) || [];
+          const filteredFavoriteList = favoriteIdList.filter(
+            (id) => id !== selectedId,
+          );
+          localStorage.setItem(
+            'idFavorite',
+            JSON.stringify(filteredFavoriteList),
+          );
+        } else {
+          const favoriteIdList =
+            (JSON.parse(
+              String(localStorage.getItem('idFavorite')),
+            ) as number[]) || [];
 
-        favoriteIdList.push(selectedId);
-        localStorage.setItem('idFavorite', JSON.stringify(favoriteIdList));
+          favoriteIdList.push(selectedId);
+          localStorage.setItem('idFavorite', JSON.stringify(favoriteIdList));
+        }
 
         return {
           ...song,
           isFavorite: !song.isFavorite,
         };
       } else {
-        // eliminar id del local storage
         return song;
       }
     });
 
     setSongs(modifiedSongsList);
   };
-
-  console.log('songs', songs);
 
   return (
     <Container>
