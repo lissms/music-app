@@ -17,7 +17,6 @@ export const Main = styled.main`
   width: 100%;
   padding-inline: 2.5rem;
   height: 100vh;
-  background: #fabada;
   overflow: scroll;
 
   ${from['tabletLandscape']} {
