@@ -1,3 +1,4 @@
+import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
 import { ApolloError, gql, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
@@ -51,7 +52,7 @@ interface Song {
   image: string;
   name: string;
 }
-interface MappedSong {
+export interface MappedSong {
   audio: string;
   author: string;
   description: string;
@@ -60,6 +61,7 @@ interface MappedSong {
   image: string;
   songName: string;
   isFavorite: boolean;
+  isPlaying: boolean;
 }
 
 // TODO: control isLoading and error
@@ -86,9 +88,25 @@ export const SongsList = ({}: SongsListProps) => {
       image: song.image,
       songName: song.name,
       isFavorite: localStorageList.some((id) => id === song.id),
+      isPlaying: false,
     }));
     setSongs(mapperData);
   }, [data]);
+
+  console.log('songs', songs);
+
+  const togglePlayPause = (selectedId: number) => {
+    setSongs(
+      songs?.map((song) =>
+        song.id === selectedId
+          ? {
+              ...song,
+              isPlaying: !song.isPlaying,
+            }
+          : song,
+      ),
+    );
+  };
 
   const toggleFavorite = (selectedId: number) => {
     const modifiedSongsList = songs?.map((song) => {
@@ -143,10 +161,13 @@ export const SongsList = ({}: SongsListProps) => {
               isFavorite={item.isFavorite}
               id={item.id}
               toggleFavorite={toggleFavorite}
+              togglePlayPause={togglePlayPause}
+              isPlaying={item.isPlaying}
             />
           </li>
         ))}
       </List>
+      <AudioPlayer isPlaying={true}></AudioPlayer>
     </Container>
   );
 };

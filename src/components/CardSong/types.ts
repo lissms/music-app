@@ -1,3 +1,5 @@
+import { MappedSong } from '$/components/SongsList';
+
 export interface ImageProps {
   image: string;
 }
@@ -11,4 +13,6 @@ export type CardSongProps = {
   isFavorite: boolean;
   id: number;
   toggleFavorite: (isSelectedId: number) => void;
+  togglePlayPause: (id: number) => MappedSong[];
+  isPlaying: boolean;
 };

@@ -1,5 +1,6 @@
 import HeartAddIcon from '$/assets/icons/heart-add.svg';
 import HeartIcon from '$/assets/icons/heart.svg';
+import PauseIcon from '$/assets/icons/pause-white.svg';
 import PlayIcon from '$/assets/icons/play.svg';
 import React from 'react';
 
@@ -26,6 +27,8 @@ export const CardSong = ({
   isFavorite,
   id,
   toggleFavorite,
+  togglePlayPause,
+  isPlaying,
 }: CardSongProps) => (
   <Container>
     <ContainerSong>
@@ -37,8 +40,8 @@ export const CardSong = ({
           <p className="description">{description}</p>
         </Information>
         <Details>
-          <ButtonPlay>
-            <PlayIcon />
+          <ButtonPlay onClick={() => togglePlayPause(id)}>
+            {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </ButtonPlay>
           <Duration>5 min</Duration>
           <Genre>
