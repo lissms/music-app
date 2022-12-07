@@ -3,13 +3,19 @@ import React, { useRef, useState } from 'react';
 import { Container } from './styles';
 import type { AudioPlayerProps } from './types';
 
-export const AudioPlayer = ({ isPlaying = true }: AudioPlayerProps) => {
+export const AudioPlayer = ({ isPlaying }: AudioPlayerProps) => {
   const [isTheMusicSounds, setIsTheMusicSounds] = useState(isPlaying);
+
   const audioPlayer = useRef();
+
+  console.log('isTheMusicSounds', isTheMusicSounds);
+  console.log('isPlayingProps', isPlaying);
 
   const togglePlayPause = () => {
     setIsTheMusicSounds(!isTheMusicSounds);
-    isTheMusicSounds ? audioPlayer.current.play() : audioPlayer.current.pause();
+    !isTheMusicSounds
+      ? audioPlayer.current.play()
+      : audioPlayer.current.pause();
   };
   return (
     <Container isPlaying={isPlaying}>

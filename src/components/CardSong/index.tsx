@@ -27,7 +27,7 @@ export const CardSong = ({
   isFavorite,
   id,
   toggleFavorite,
-  togglePlayPause,
+  handleClickPlay,
   isPlaying,
 }: CardSongProps) => (
   <Container>
@@ -40,7 +40,7 @@ export const CardSong = ({
           <p className="description">{description}</p>
         </Information>
         <Details>
-          <ButtonPlay onClick={() => togglePlayPause(id)}>
+          <ButtonPlay onClick={() => handleClickPlay(id)}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </ButtonPlay>
           <Duration>5 min</Duration>

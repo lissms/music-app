@@ -70,6 +70,7 @@ export interface MappedSong {
 
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
 
   useEffect(() => {
@@ -93,7 +94,7 @@ export const SongsList = ({}: SongsListProps) => {
     setSongs(mapperData);
   }, [data]);
 
-  console.log('songs', songs);
+  console.log('isPlaying', isPlaying);
 
   const togglePlayPause = (selectedId: number) => {
     setSongs(
@@ -106,6 +107,12 @@ export const SongsList = ({}: SongsListProps) => {
           : song,
       ),
     );
+  };
+
+  const handleClickPlay = (selectedId: number): void => {
+    togglePlayPause(selectedId);
+    const prevState = songs?.some((song) => song.isPlaying === true);
+    setIsPlaying(!prevState);
   };
 
   const toggleFavorite = (selectedId: number) => {
@@ -161,13 +168,13 @@ export const SongsList = ({}: SongsListProps) => {
               isFavorite={item.isFavorite}
               id={item.id}
               toggleFavorite={toggleFavorite}
-              togglePlayPause={togglePlayPause}
+              handleClickPlay={handleClickPlay}
               isPlaying={item.isPlaying}
             />
           </li>
         ))}
       </List>
-      <AudioPlayer isPlaying={true}></AudioPlayer>
+      <AudioPlayer isPlaying={isPlaying}></AudioPlayer>
     </Container>
   );
 };
