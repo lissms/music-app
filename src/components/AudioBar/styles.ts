@@ -20,6 +20,3 @@ export const ContainerPlay = styled.div<Playing>`
   display: ${({ isPlaying }) => (isPlaying ? 'flex' : 'none')};
   background-color: red;
 `;
-export const Audio = styled.audio<Playing>``;
-export const Button = styled.button``;
-export const Range = styled.input``;

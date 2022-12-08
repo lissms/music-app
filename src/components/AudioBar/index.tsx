@@ -1,19 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { Audio, Button, Container, ContainerPlay, Range } from './styles';
-import type { AudioPlayerProps } from './types';
+import { Container, ContainerPlay } from './styles';
+import type { AudioBarProps } from './types';
 
-export const AudioPlayer = ({
-  isPlaying,
-  url,
-  id,
-  image,
-  audioPlayer,
-  handleClickPlay,
-}: AudioPlayerProps) => {
+export const AudioBar = ({ isPlaying, image, children }: AudioBarProps) => {
   const myLoader = ({ src, width, quality }) =>
     `${image}${src}?w=${width}&q=${quality || 75}`;
+
   return (
     <Container isPlaying={isPlaying}>
       <ContainerPlay isPlaying={isPlaying}>
@@ -24,11 +18,7 @@ export const AudioPlayer = ({
           width={22}
           alt={'lens icon'}
         />
-        <Audio ref={audioPlayer} src={url} />
-        <Button onClick={() => handleClickPlay(id)}>play / pause</Button>
-        <div>
-          <Range type="range" />
-        </div>
+        {children}
       </ContainerPlay>
     </Container>
   );

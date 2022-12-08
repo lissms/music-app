@@ -40,7 +40,7 @@ export const CardSong = ({
           <p className="description">{description}</p>
         </Information>
         <Details>
-          <ButtonPlay onClick={() => handleClickPlay(id)}>
+          <ButtonPlay onClick={handleClickPlay}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </ButtonPlay>
           <Duration>5 min</Duration>

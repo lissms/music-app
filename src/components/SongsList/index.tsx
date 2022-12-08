@@ -1,7 +1,7 @@
 import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
 import { ApolloError, gql, useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Container, List, Title } from './styles';
 import type { Data, SongsListProps } from './types';
@@ -63,6 +63,12 @@ export interface MappedSong {
   isFavorite: boolean;
   isPlaying: boolean;
 }
+export interface InfoPlay {
+  url?: string;
+  selectedId?: number;
+  isPlayingSong?: boolean;
+  image: string;
+}
 
 // TODO: control isLoading and error
 // TODO: refactorizar pasar logica y ts a otro archivo
@@ -70,8 +76,9 @@ export interface MappedSong {
 
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [infoPlay, setInfoPlay] = useState<InfoPlay>({});
   const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
+  const audioPlayer = useRef();
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
@@ -94,9 +101,21 @@ export const SongsList = ({}: SongsListProps) => {
     setSongs(mapperData);
   }, [data]);
 
-  console.log('isPlaying', isPlaying);
+  const togglePlayPause = useCallback(() => {
+    if (infoPlay.isPlayingSong !== undefined) {
+      if (infoPlay.isPlayingSong) {
+        audioPlayer.current.play();
+      } else {
+        audioPlayer.current.pause();
+      }
+    }
+  }, [infoPlay.isPlayingSong]);
 
-  const togglePlayPause = (selectedId: number) => {
+  useEffect(() => {
+    togglePlayPause();
+  }, [togglePlayPause, infoPlay.isPlayingSong]);
+
+  const toggleSelectedSongIsPlaying = (selectedId: number) => {
     setSongs(
       songs?.map((song) =>
         song.id === selectedId
@@ -109,10 +128,18 @@ export const SongsList = ({}: SongsListProps) => {
     );
   };
 
-  const handleClickPlay = (selectedId: number): void => {
-    togglePlayPause(selectedId);
-    const prevState = songs?.some((song) => song.isPlaying === true);
-    setIsPlaying(!prevState);
+  const handleClickPlay = (
+    selectedId: number,
+    url: string,
+    image: string,
+  ): void => {
+    toggleSelectedSongIsPlaying(selectedId);
+    setInfoPlay((prevInfoPlay) => ({
+      selectedId,
+      url,
+      isPlayingSong: !prevInfoPlay.isPlayingSong,
+      image,
+    }));
   };
 
   const toggleFavorite = (selectedId: number) => {
@@ -157,24 +184,33 @@ export const SongsList = ({}: SongsListProps) => {
     <Container>
       <Title>Featured songs</Title>
       <List>
-        {songs?.map((item) => (
-          <li key={item.id}>
+        {songs?.map((song) => (
+          <li key={song.id}>
             <CardSong
-              image={item.image}
-              name={item.songName}
-              description={item.description}
-              genre={item.genre}
-              author={item.author}
-              isFavorite={item.isFavorite}
-              id={item.id}
+              image={song.image}
+              name={song.songName}
+              description={song.description}
+              genre={song.genre}
+              author={song.author}
+              isFavorite={song.isFavorite}
+              id={song.id}
               toggleFavorite={toggleFavorite}
-              handleClickPlay={handleClickPlay}
-              isPlaying={item.isPlaying}
+              handleClickPlay={() =>
+                handleClickPlay(song.id, song.audio, song.image)
+              }
+              isPlaying={song.isPlaying}
             />
           </li>
         ))}
       </List>
-      <AudioPlayer isPlaying={isPlaying}></AudioPlayer>
+      <AudioPlayer
+        isPlaying={infoPlay.isPlayingSong}
+        url={infoPlay.url}
+        id={infoPlay.selectedId}
+        image={infoPlay.image}
+        audioPlayer={audioPlayer}
+        handleClickPlay={handleClickPlay}
+      ></AudioPlayer>
     </Container>
   );
 };
