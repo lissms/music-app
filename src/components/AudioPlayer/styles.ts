@@ -1,3 +1,4 @@
+import { typography } from '$/styles/themes/typography';
 import styled from 'styled-components';
 
 import { Playing } from './types';
@@ -17,9 +18,41 @@ export const Container = styled.section<Playing>`
 `;
 
 export const ContainerPlay = styled.div<Playing>`
+  justify-content: space-between;
+  align-items: center;
   display: ${({ isPlaying }) => (isPlaying ? 'flex' : 'none')};
-  background-color: red;
+  width: 100%;
 `;
 export const Audio = styled.audio<Playing>``;
-export const Button = styled.button``;
 export const Range = styled.input``;
+
+export const Button = styled.button`
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2.75rem;
+  background-color: ${({ theme }) => theme.color.white};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+export const ContainerInfoImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+`;
+export const ContainerInfo = styled.div`
+  margin-left: 0.75rem;
+  & .name {
+    ${typography.body2};
+    color: ${({ theme }) => theme.color.white};
+    font-weight: ${({ theme }) => theme.weight.regular};
+  }
+  & .author {
+    ${typography.caption};
+    color: ${({ theme }) => theme.color.grayscale200};
+    font-weight: ${({ theme }) => theme.weight.regular};
+  }
+`;

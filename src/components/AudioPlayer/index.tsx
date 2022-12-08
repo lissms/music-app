@@ -1,7 +1,16 @@
+import PauseIcon from '$/assets/icons/pause.svg';
 import Image from 'next/image';
 import React from 'react';
 
-import { Audio, Button, Container, ContainerPlay, Range } from './styles';
+import {
+  Audio,
+  Button,
+  Container,
+  ContainerInfo,
+  ContainerInfoImage,
+  ContainerPlay,
+  Range,
+} from './styles';
 import type { AudioPlayerProps } from './types';
 
 export const AudioPlayer = ({
@@ -17,15 +26,26 @@ export const AudioPlayer = ({
   return (
     <Container isPlaying={isPlaying}>
       <ContainerPlay isPlaying={isPlaying}>
-        <Image
-          loader={myLoader}
-          src="me"
-          height={22}
-          width={22}
-          alt={'lens icon'}
-        />
+        <ContainerInfoImage>
+          <Image
+            style={{ borderRadius: 12 }}
+            loader={myLoader}
+            src="me"
+            height={48}
+            width={48}
+            alt={'lens icon'}
+            priority={true}
+          />
+          <ContainerInfo>
+            <p className="name">Ed sheran</p>
+            <p className="author">Cantante de pop</p>
+          </ContainerInfo>
+        </ContainerInfoImage>
+
         <Audio ref={audioPlayer} src={url} />
-        <Button onClick={() => handleClickPlay(id)}>play / pause</Button>
+        <Button onClick={() => handleClickPlay(id)}>
+          <PauseIcon></PauseIcon>
+        </Button>
         <div>
           <Range type="range" />
         </div>
