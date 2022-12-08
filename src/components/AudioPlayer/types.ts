@@ -11,5 +11,6 @@ export type AudioPlayerProps = {
   handleClickPlay: (selectedId: number, url: string) => void;
 };
 export type Playing = {
-  isPlaying: boolean;
+  isPlaying?: boolean;
+  image?: string;
 };

@@ -22,6 +22,9 @@ export const ContainerImage = styled.div<ImageProps>`
   width: 8.75rem;
   height: 8.75rem;
   border-radius: 0.75rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-image: ${({ image }) => image && `url(${image})`};
 `;
 

@@ -1,3 +1,5 @@
+import BackIcon from '$/assets/icons/back.svg';
+import NextIcon from '$/assets/icons/next.svg';
 import PauseIcon from '$/assets/icons/pause.svg';
 import Image from 'next/image';
 import React from 'react';
@@ -5,7 +7,9 @@ import React from 'react';
 import {
   Audio,
   Button,
+  ButtonBackNext,
   Container,
+  ContainerImage,
   ContainerInfo,
   ContainerInfoImage,
   ContainerPlay,
@@ -20,36 +24,33 @@ export const AudioPlayer = ({
   image,
   audioPlayer,
   handleClickPlay,
-}: AudioPlayerProps) => {
-  const myLoader = ({ src, width, quality }) =>
-    `${image}${src}?w=${width}&q=${quality || 75}`;
-  return (
-    <Container isPlaying={isPlaying}>
-      <ContainerPlay isPlaying={isPlaying}>
-        <ContainerInfoImage>
-          <Image
-            style={{ borderRadius: 12 }}
-            loader={myLoader}
-            src="me"
-            height={48}
-            width={48}
-            alt={'lens icon'}
-            priority={true}
-          />
-          <ContainerInfo>
-            <p className="name">Ed sheran</p>
-            <p className="author">Cantante de pop</p>
-          </ContainerInfo>
-        </ContainerInfoImage>
+}: AudioPlayerProps) => (
+  // const myLoader = ({ src, width, quality }) =>
+  //   `${image}${src}?w=${width}&q=${quality || 75}`;
+  <Container isPlaying={isPlaying}>
+    <ContainerPlay isPlaying={isPlaying}>
+      <ContainerInfoImage>
+        <ContainerImage image={image} />
 
-        <Audio ref={audioPlayer} src={url} />
-        <Button onClick={() => handleClickPlay(id)}>
-          <PauseIcon></PauseIcon>
-        </Button>
-        <div>
-          <Range type="range" />
-        </div>
-      </ContainerPlay>
-    </Container>
-  );
-};
+        <ContainerInfo>
+          <p className="name">Ed sheran</p>
+          <p className="author">Cantante de pop</p>
+        </ContainerInfo>
+      </ContainerInfoImage>
+
+      <Audio ref={audioPlayer} src={url} />
+      <ButtonBackNext onClick={() => handleClickPlay(id)}>
+        <BackIcon />
+      </ButtonBackNext>
+      <Button onClick={() => handleClickPlay(id)}>
+        <PauseIcon />
+      </Button>
+      <ButtonBackNext onClick={() => handleClickPlay(id)}>
+        <NextIcon />
+      </ButtonBackNext>
+      <div>
+        <Range type="range" />
+      </div>
+    </ContainerPlay>
+  </Container>
+);

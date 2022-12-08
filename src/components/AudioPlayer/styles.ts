@@ -37,11 +37,31 @@ export const Button = styled.button`
   align-items: center;
   cursor: pointer;
 `;
+export const ButtonBackNext = styled.button`
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2.75rem;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
 export const ContainerInfoImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: auto;
+`;
+export const ContainerImage = styled.div<Playing>`
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: ${({ image }) => image && `url(${image})`};
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
 `;
 export const ContainerInfo = styled.div`
   margin-left: 0.75rem;
