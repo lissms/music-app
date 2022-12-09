@@ -4,7 +4,6 @@ import PauseIcon from '$/assets/icons/pause.svg';
 import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 
 import {
-  Audio,
   Button,
   ButtonBackNext,
   Container,
@@ -33,6 +32,8 @@ export const AudioPlayer = ({
   id,
   image,
   handleClickPlay,
+  handleClickNext,
+  handleClickBack,
 }: AudioPlayerProps) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -88,13 +89,13 @@ export const AudioPlayer = ({
           src={url}
           onLoadedMetadata={handleLoadedMetadata}
         />
-        <ButtonBackNext>
+        <ButtonBackNext onClick={() => handleClickBack(id)}>
           <BackIcon />
         </ButtonBackNext>
-        <Button onClick={() => handleClickPlay(id, isPlaying, url, image)}>
+        <Button onClick={() => handleClickPlay(id, url, image, isPlaying)}>
           <PauseIcon />
         </Button>
-        <ButtonBackNext>
+        <ButtonBackNext onClick={() => handleClickNext(id)}>
           <NextIcon />
         </ButtonBackNext>
         <ContainerProgressBar>

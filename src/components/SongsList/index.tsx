@@ -70,9 +70,9 @@ export interface MappedSong {
   isPlaying: boolean;
 }
 export interface InfoPlay {
-  url?: string;
-  selectedId?: number;
-  isPlayingSong?: boolean;
+  url: string;
+  selectedId: number;
+  isPlayingSong: boolean;
   image: string;
 }
 
@@ -80,9 +80,16 @@ export interface InfoPlay {
 // TODO: refactorizar pasar logica y ts a otro archivo
 // TODO: STORYBOOK
 
+const infoPlayInitialState = {
+  url: '',
+  selectedId: 0,
+  isPlayingSong: false,
+  image: '',
+};
+
 export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
-  const [infoPlay, setInfoPlay] = useState<InfoPlay>({});
+  const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
   const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
 
   useEffect(() => {
@@ -122,7 +129,6 @@ export const SongsList = ({}: SongsListProps) => {
     );
   };
 
-  console.log('songs', songs);
   const handleClickPlay = (
     selectedId: number,
     url: string,
@@ -137,7 +143,44 @@ export const SongsList = ({}: SongsListProps) => {
       image,
     });
   };
+  const getNextIndex = (id: number | undefined): number => {
+    const index = songs?.findIndex((song) => id === song.id);
+    if (songs?.length === index + 1) {
+      return 0;
+    } else {
+      return index + 1;
+    }
+  };
+  const getBackIndex = (id: number | undefined): number => {
+    const index = songs?.findIndex((song) => id === song.id);
+    if (index === 0) {
+      return songs?.length - 1;
+    } else {
+      return index - 1;
+    }
+  };
 
+  const handleClickBack = (selectedId: number): void => {
+    const backIndex = getBackIndex(selectedId);
+    setInfoPlay({
+      selectedId: songs[backIndex]?.id as number,
+      url: songs[backIndex]?.audio as string,
+      image: songs[backIndex]?.image as string,
+      isPlayingSong: true,
+    });
+    toggleSelectedSongIsPlaying(songs[backIndex]?.id || selectedId);
+  };
+
+  const handleClickNext = (selectedId: number): void => {
+    const nextIndex = getNextIndex(selectedId);
+    setInfoPlay({
+      selectedId: songs[nextIndex]?.id as number,
+      url: songs[nextIndex]?.audio as string,
+      image: songs[nextIndex]?.image as string,
+      isPlayingSong: true,
+    });
+    toggleSelectedSongIsPlaying(songs[nextIndex]?.id || selectedId);
+  };
   const toggleFavorite = (selectedId: number) => {
     const modifiedSongsList = songs?.map((song) => {
       if (song.id === selectedId) {
@@ -205,6 +248,8 @@ export const SongsList = ({}: SongsListProps) => {
         id={infoPlay.selectedId}
         image={infoPlay.image}
         handleClickPlay={handleClickPlay}
+        handleClickNext={handleClickNext}
+        handleClickBack={handleClickBack}
       ></AudioPlayer>
     </Container>
   );
