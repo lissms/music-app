@@ -74,6 +74,8 @@ export interface InfoPlay {
   selectedId: number;
   isPlayingSong: boolean;
   image: string;
+  name: string;
+  author: string;
 }
 
 // TODO: control isLoading and error
@@ -85,6 +87,8 @@ const infoPlayInitialState = {
   selectedId: 0,
   isPlayingSong: false,
   image: '',
+  name: '',
+  author: '',
 };
 
 export const SongsList = ({}: SongsListProps) => {
@@ -134,6 +138,8 @@ export const SongsList = ({}: SongsListProps) => {
     url: string,
     image: string,
     isPlayingSong: boolean,
+    name: string,
+    author: string,
   ): void => {
     toggleSelectedSongIsPlaying(selectedId);
     setInfoPlay({
@@ -141,6 +147,8 @@ export const SongsList = ({}: SongsListProps) => {
       url,
       isPlayingSong: !isPlayingSong,
       image,
+      name,
+      author,
     });
   };
   const getNextIndex = (id: number | undefined): number => {
@@ -167,6 +175,8 @@ export const SongsList = ({}: SongsListProps) => {
       url: songs[backIndex]?.audio as string,
       image: songs[backIndex]?.image as string,
       isPlayingSong: true,
+      name: songs[backIndex]?.songName as string,
+      author: songs[backIndex]?.author as string,
     });
     toggleSelectedSongIsPlaying(songs[backIndex]?.id || selectedId);
   };
@@ -178,6 +188,8 @@ export const SongsList = ({}: SongsListProps) => {
       url: songs[nextIndex]?.audio as string,
       image: songs[nextIndex]?.image as string,
       isPlayingSong: true,
+      name: songs[nextIndex]?.songName as string,
+      author: songs[nextIndex]?.author as string,
     });
     toggleSelectedSongIsPlaying(songs[nextIndex]?.id || selectedId);
   };
@@ -235,7 +247,14 @@ export const SongsList = ({}: SongsListProps) => {
               id={song.id}
               toggleFavorite={toggleFavorite}
               handleClickPlay={() =>
-                handleClickPlay(song.id, song.audio, song.image, song.isPlaying)
+                handleClickPlay(
+                  song.id,
+                  song.audio,
+                  song.image,
+                  song.isPlaying,
+                  song.songName,
+                  song.author,
+                )
               }
               isPlaying={song.isPlaying}
             />
@@ -247,6 +266,8 @@ export const SongsList = ({}: SongsListProps) => {
         url={infoPlay.url}
         id={infoPlay.selectedId}
         image={infoPlay.image}
+        name={infoPlay.name}
+        author={infoPlay.author}
         handleClickPlay={handleClickPlay}
         handleClickNext={handleClickNext}
         handleClickBack={handleClickBack}

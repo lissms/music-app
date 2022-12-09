@@ -7,6 +7,8 @@ export type AudioPlayerProps = {
   url: string;
   id: number;
   image: string;
+  name: string;
+  author: string;
   handleClickPlay: (
     selectedId: number,
     url: string,

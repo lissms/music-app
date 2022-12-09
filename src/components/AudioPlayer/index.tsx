@@ -31,6 +31,8 @@ export const AudioPlayer = ({
   url,
   id,
   image,
+  name,
+  author,
   handleClickPlay,
   handleClickNext,
   handleClickBack,
@@ -79,8 +81,8 @@ export const AudioPlayer = ({
         <ContainerInfoImage>
           <ContainerImage image={image} />
           <ContainerInfo>
-            <p className="name">Ed sheran</p>
-            <p className="author">Cantante de pop</p>
+            <p className="name">{name}</p>
+            <p className="author">{author}</p>
           </ContainerInfo>
         </ContainerInfoImage>
 
