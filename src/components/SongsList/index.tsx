@@ -114,23 +114,28 @@ export const SongsList = ({}: SongsListProps) => {
               ...song,
               isPlaying: !song.isPlaying,
             }
-          : song,
+          : {
+              ...song,
+              isPlaying: false,
+            },
       ),
     );
   };
 
+  console.log('songs', songs);
   const handleClickPlay = (
     selectedId: number,
     url: string,
     image: string,
+    isPlayingSong: boolean,
   ): void => {
     toggleSelectedSongIsPlaying(selectedId);
-    setInfoPlay((prevInfoPlay) => ({
+    setInfoPlay({
       selectedId,
       url,
-      isPlayingSong: !prevInfoPlay.isPlayingSong,
+      isPlayingSong: !isPlayingSong,
       image,
-    }));
+    });
   };
 
   const toggleFavorite = (selectedId: number) => {
@@ -187,7 +192,7 @@ export const SongsList = ({}: SongsListProps) => {
               id={song.id}
               toggleFavorite={toggleFavorite}
               handleClickPlay={() =>
-                handleClickPlay(song.id, song.audio, song.image)
+                handleClickPlay(song.id, song.audio, song.image, song.isPlaying)
               }
               isPlaying={song.isPlaying}
             />

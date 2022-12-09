@@ -91,7 +91,7 @@ export const AudioPlayer = ({
         <ButtonBackNext>
           <BackIcon />
         </ButtonBackNext>
-        <Button onClick={() => handleClickPlay(id)}>
+        <Button onClick={() => handleClickPlay(id, isPlaying, url, image)}>
           <PauseIcon />
         </Button>
         <ButtonBackNext>
