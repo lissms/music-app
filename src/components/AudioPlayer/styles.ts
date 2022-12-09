@@ -14,7 +14,7 @@ export const Container = styled.section<Playing>`
   width: 100%;
   border-radius: 16px 16px 0px 0px;
   background-color: ${({ theme }) => theme.color.grayscale900};
-  padding: 0 1.5rem;
+  padding: 0 0.75rem 0 1.5rem;
 `;
 
 export const ContainerPlay = styled.div<Playing>`
@@ -23,8 +23,38 @@ export const ContainerPlay = styled.div<Playing>`
   display: ${({ isPlaying }) => (isPlaying ? 'flex' : 'none')};
   width: 100%;
 `;
-export const Audio = styled.audio<Playing>``;
-export const Range = styled.input``;
+export const ContainerProgressBar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ProgressBar = styled.input`
+  /* --bar-bg: #fabada;
+  --seek-before-width: 100px;
+  --seek-before-color: red;
+  --knobby: green;
+  --selected-Knobby: #000; */
+  appearance: none;
+  background-color: ${({ theme }) => theme.color.grayscale700};
+  border-radius: 20px;
+  position: relative;
+  width: 476px;
+  height: 4px;
+  outline: none;
+  /* & :before {
+    content: '';
+    height: 4px;
+    width: var(--seek-before-width);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    cursor: pointer;
+  } */
+`;
 
 export const Button = styled.button`
   border: none;
@@ -75,4 +105,10 @@ export const ContainerInfo = styled.div`
     color: ${({ theme }) => theme.color.grayscale200};
     font-weight: ${({ theme }) => theme.weight.regular};
   }
+`;
+export const Time = styled.p`
+  padding: 0 0.75rem;
+  ${typography.caption};
+  color: ${({ theme }) => theme.color.white};
+  font-weight: ${({ theme }) => theme.weight.regular};
 `;

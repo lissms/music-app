@@ -1,7 +1,13 @@
 import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
 import { ApolloError, gql, useQuery } from '@apollo/client';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Container, List, Title } from './styles';
 import type { Data, SongsListProps } from './types';
@@ -78,7 +84,6 @@ export const SongsList = ({}: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>({});
   const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
-  const audioPlayer = useRef();
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
@@ -100,20 +105,6 @@ export const SongsList = ({}: SongsListProps) => {
     }));
     setSongs(mapperData);
   }, [data]);
-
-  const togglePlayPause = useCallback(() => {
-    if (infoPlay.isPlayingSong !== undefined) {
-      if (infoPlay.isPlayingSong) {
-        audioPlayer.current.play();
-      } else {
-        audioPlayer.current.pause();
-      }
-    }
-  }, [infoPlay.isPlayingSong]);
-
-  useEffect(() => {
-    togglePlayPause();
-  }, [togglePlayPause, infoPlay.isPlayingSong]);
 
   const toggleSelectedSongIsPlaying = (selectedId: number) => {
     setSongs(
@@ -208,7 +199,6 @@ export const SongsList = ({}: SongsListProps) => {
         url={infoPlay.url}
         id={infoPlay.selectedId}
         image={infoPlay.image}
-        audioPlayer={audioPlayer}
         handleClickPlay={handleClickPlay}
       ></AudioPlayer>
     </Container>

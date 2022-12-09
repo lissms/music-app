@@ -13,4 +13,5 @@ export type CardSongProps = {
   toggleFavorite: (isSelectedId: number) => void;
   handleClickPlay: (id: number) => void;
   isPlaying: boolean;
+  duration: number;
 };
