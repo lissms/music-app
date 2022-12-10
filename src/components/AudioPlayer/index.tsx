@@ -7,6 +7,7 @@ import {
   Button,
   ButtonBackNext,
   Container,
+  ContainerButton,
   ContainerImage,
   ContainerInfo,
   ContainerInfoImage,
@@ -91,15 +92,17 @@ export const AudioPlayer = ({
           src={url}
           onLoadedMetadata={handleLoadedMetadata}
         />
-        <ButtonBackNext onClick={() => handleClickBack(id)}>
-          <BackIcon />
-        </ButtonBackNext>
-        <Button onClick={() => handleClickPlay(id, url, image, isPlaying)}>
-          <PauseIcon />
-        </Button>
-        <ButtonBackNext onClick={() => handleClickNext(id)}>
-          <NextIcon />
-        </ButtonBackNext>
+        <ContainerButton>
+          <ButtonBackNext onClick={() => handleClickBack(id)}>
+            <BackIcon />
+          </ButtonBackNext>
+          <Button onClick={() => handleClickPlay(id, url, image, isPlaying)}>
+            <PauseIcon />
+          </Button>
+          <ButtonBackNext onClick={() => handleClickNext(id)}>
+            <NextIcon />
+          </ButtonBackNext>
+        </ContainerButton>
         <ContainerProgressBar>
           <Time>{getFormattedTime(currentTime)}</Time>
           <ProgressBar

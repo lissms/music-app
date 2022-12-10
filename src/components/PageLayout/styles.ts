@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  height: 100vh;
 `;
 
 export const SideMenu = styled(DefaultSideMenu)`
@@ -16,11 +15,12 @@ export const Main = styled.main`
   justify-content: center;
   width: 100%;
   padding-inline: 2.5rem;
-  height: 100vh;
   overflow: scroll;
 
   ${from['tabletLandscape']} {
     padding-inline: 6rem;
+  }
+  ${from['mobile']} {
   }
 `;
 

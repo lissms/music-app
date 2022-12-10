@@ -11,7 +11,7 @@ export const Container = styled.section<Playing>`
   left: 0;
   height: ${({ isPlaying }) => (isPlaying ? '5rem' : '0')};
   width: 100%;
-  border-radius: 16px 16px 0px 0px;
+  border-radius: 1rem 1rem 0 0;
   background-color: ${({ theme }) => theme.color.grayscale900};
   padding: 0 1.5rem;
 `;

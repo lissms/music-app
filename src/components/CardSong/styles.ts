@@ -1,4 +1,5 @@
 import { typography } from '$/styles/themes/typography';
+import { from } from '$/styles/utils/responsive';
 import styled from 'styled-components';
 
 import { ImageProps } from './types';
@@ -29,9 +30,16 @@ export const ContainerImage = styled.div<ImageProps>`
 `;
 
 export const Information = styled.div`
-  width: 37.688rem;
-  height: 5.75rem;
-  overflow: scroll;
+  width: 25.688rem;
+  height: 8.75rem;
+  padding: 0 1.25rem 0 0;
+  ${from['mobile']} {
+    width: 37.688rem;
+    height: 5.75rem;
+    overflow: scroll;
+    padding: 0;
+  }
+
   & p {
     margin-bottom: 0.25rem;
   }
@@ -58,7 +66,7 @@ export const Details = styled.div`
   align-items: center;
   display: flex;
   height: 2rem;
-  margin-top: 12px;
+  margin-top: 0.75rem;
 `;
 export const Duration = styled.p`
   ${typography.caption};
@@ -85,9 +93,9 @@ export const Genre = styled.div`
 `;
 export const ButtonPlay = styled.button`
   background-color: ${({ theme }) => theme.color.grayscale900};
-  height: 32px;
-  width: 32px;
-  border-radius: 44px;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 2.75rem;
   color: inherit;
   border: none;
   padding: 0;
@@ -100,8 +108,8 @@ export const ButtonPlay = styled.button`
   margin-right: 0.75rem;
 `;
 export const ButtonFavorite = styled.button`
-  height: 20px;
-  width: 20px;
+  height: 1.25rem;
+  width: 1.25rem;
   color: inherit;
   background: none;
   border: none;

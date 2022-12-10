@@ -1,14 +1,21 @@
+import { from } from '$/styles/utils/responsive';
 import styled from 'styled-components';
 
 import { StyledMenuItemLinkProps, StyledMenuItemProps } from './types';
 
 export const Container = styled.aside`
-  position: relative;
-
-  width: 15rem;
-  height: 100vh;
+  position: fixed;
+  display: flex;
+  width: 100%;
 
   background-color: ${({ theme }) => theme.color.grayscale50};
+
+  ${from['mobile']} {
+    position: relative;
+    background-color: ${({ theme }) => theme.color.grayscale50};
+    width: 15rem;
+    flex-direction: column;
+  }
 `;
 
 export const UserInfoContainer = styled.div`
@@ -26,6 +33,10 @@ export const MenuNav = styled.nav`
 export const MenuList = styled.ul`
   list-style-type: none;
   padding-inline-start: 0;
+
+  @media (max-width: 489px) {
+    display: flex;
+  }
 `;
 
 export const MenuItemLink = styled.a<StyledMenuItemLinkProps>`
