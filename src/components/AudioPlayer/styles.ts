@@ -10,8 +10,10 @@ export const Container = styled.section<Playing>`
   align-items: center;
   position: fixed;
   bottom: 0;
+  transform: translateY(${({ isPlaying }) => (isPlaying ? '0' : '5rem')});
+  transition: all 1s;
   left: 0;
-  height: ${({ isPlaying }) => (isPlaying ? '5rem' : '0')};
+  height: 5rem;
   width: 100%;
   border-radius: 1rem 1rem 0 0;
   background-color: ${({ theme }) => theme.color.grayscale900};
@@ -46,7 +48,6 @@ export const ProgressBar = styled.input`
     ${({ theme }) => theme.color.malibu500},
     ${({ theme }) => theme.color.malibu500}
   );
-  /* background-size: 30% 100%; */
   background-size: ${({ value, max }) =>
       `${(Number(value) * 100) / Number(max)}%`},
     100%;
@@ -67,32 +68,7 @@ export const ProgressBar = styled.input`
     border: none;
     background: transparent;
   }
-  /* appearance: none;
-  background-color: ${({ theme }) => theme.color.grayscale700};
-  border-radius: 1.25rem;
-  position: relative;
-  width: 7.75rem;
-  height: 0.25rem;
-  outline: none; */
 
-  /* --bar-bg: #fabada;
-  --seek-before-width: 100px;
-  --seek-before-color: red;
-  --knobby: green;
-  --selected-Knobby: #000; */
-
-  /* & :before {
-    content: '';
-    height: 4px;
-    width: var(--seek-before-width);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    cursor: pointer;
-  } */
   ${from['mobile']} {
     width: 29.75rem;
   }
@@ -108,6 +84,17 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover,
+  &:focus {
+    animation: pulse 1s;
+    box-shadow: 0 0 0 0.75em ${({ theme }) => theme.color.grayscale700};
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 var(--hover);
+    }
+  }
 `;
 export const ButtonBackNext = styled.button`
   border: none;

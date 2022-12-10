@@ -106,6 +106,17 @@ export const ButtonPlay = styled.button`
   justify-content: center;
   align-items: center;
   margin-right: 0.75rem;
+  &:hover,
+  &:focus {
+    animation: pulse 1s;
+    box-shadow: 0 0 0 0.4rem ${({ theme }) => theme.color.grayscale300};
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 var(--hover);
+    }
+  }
 `;
 export const ButtonFavorite = styled.button`
   height: 1.25rem;
