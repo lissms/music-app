@@ -1,4 +1,6 @@
-export type SongsListProps = {};
+export type SongsListProps = {
+  songName: string | number | readonly string[] | undefined;
+};
 interface AudioProps {
   id: number;
   url: string;

@@ -12,30 +12,35 @@ import React, {
 import { Container, List, Title } from './styles';
 import type { Data, SongsListProps } from './types';
 
-const SONGS_QUERY = gql`
-  {
-    songs(search: "", sort: {}) {
-      pageMeta {
-        pages
-        total
-      }
-      songs {
-        description
-        genre
-        id
-        image
-        name
-        audio {
-          id
-          url
+const getSongsQuery = (
+  name: string | number | readonly string[] | undefined,
+) => {
+  const SONGS_QUERY = gql`
+    {
+      songs(search: "${name}", sort: {}) {
+        pageMeta {
+          pages
+          total
         }
-        author {
+        songs {
+          description
+          genre
+          id
+          image
           name
+          audio {
+            id
+            url
+          }
+          author {
+            name
+          }
         }
       }
     }
-  }
-`;
+  `;
+  return SONGS_QUERY;
+};
 
 interface UseQueryProps {
   data: Data;
@@ -91,10 +96,10 @@ const infoPlayInitialState = {
   author: '',
 };
 
-export const SongsList = ({}: SongsListProps) => {
+export const SongsList = ({ songName }: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
-  const { data } = useQuery<UseQueryProps>(SONGS_QUERY);
+  const { data } = useQuery<UseQueryProps>(getSongsQuery(songName));
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
