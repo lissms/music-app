@@ -1,14 +1,10 @@
+import { ApolloError } from '@apollo/client';
+
 export type SongsListProps = {
   songName: string | number | readonly string[] | undefined;
 };
-interface AudioProps {
-  id: number;
-  url: string;
-}
-interface AuthorProps {
-  name: string;
-}
-interface SongDescriptions {
+
+export type SongDescriptions = {
   audio: AudioProps;
   author: AuthorProps;
   description: string;
@@ -16,7 +12,7 @@ interface SongDescriptions {
   id: number;
   image: string;
   name: string;
-}
+};
 
 export type PageMeta = {
   pages: number;
@@ -28,4 +24,45 @@ export type Songs = {
 };
 export type Data = {
   songs: Songs;
+};
+
+export type UseQueryProps = {
+  data: Data;
+  loading: boolean;
+  error: ApolloError | undefined;
+};
+export type AudioProps = {
+  id: number;
+  url: string;
+};
+export type AuthorProps = {
+  name: string;
+};
+export type Song = {
+  audio: AudioProps;
+  author: AuthorProps;
+  description: string;
+  genre: string;
+  id: number;
+  image: string;
+  name: string;
+};
+export type MappedSong = {
+  audio: string;
+  author: string;
+  description: string;
+  genre: string;
+  id: number;
+  image: string;
+  songName: string;
+  isFavorite: boolean;
+  isPlaying: boolean;
+};
+export type InfoPlay = {
+  url: string;
+  selectedId: number;
+  isPlayingSong: boolean;
+  image: string;
+  name: string;
+  author: string;
 };

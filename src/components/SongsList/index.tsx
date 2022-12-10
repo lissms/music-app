@@ -1,16 +1,17 @@
 import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
-import { ApolloError, gql, useQuery } from '@apollo/client';
-import React, {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { gql, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { ThreeDots } from 'react-loader-spinner';
 
 import { Container, List, Title } from './styles';
-import type { Data, SongsListProps } from './types';
+import type {
+  InfoPlay,
+  MappedSong,
+  Song,
+  SongsListProps,
+  UseQueryProps,
+} from './types';
 
 const getSongsQuery = (
   name: string | number | readonly string[] | undefined,
@@ -42,51 +43,6 @@ const getSongsQuery = (
   return SONGS_QUERY;
 };
 
-interface UseQueryProps {
-  data: Data;
-  loading: boolean;
-  error: ApolloError | undefined;
-}
-interface AudioProps {
-  id: number;
-  url: string;
-}
-interface AuthorProps {
-  name: string;
-}
-interface Song {
-  audio: AudioProps;
-  author: AuthorProps;
-  description: string;
-  genre: string;
-  id: number;
-  image: string;
-  name: string;
-}
-export interface MappedSong {
-  audio: string;
-  author: string;
-  description: string;
-  genre: string;
-  id: number;
-  image: string;
-  songName: string;
-  isFavorite: boolean;
-  isPlaying: boolean;
-}
-export interface InfoPlay {
-  url: string;
-  selectedId: number;
-  isPlayingSong: boolean;
-  image: string;
-  name: string;
-  author: string;
-}
-
-// TODO: control isLoading and error
-// TODO: refactorizar pasar logica y ts a otro archivo
-// TODO: STORYBOOK
-
 const infoPlayInitialState = {
   url: '',
   selectedId: 0,
@@ -99,7 +55,7 @@ const infoPlayInitialState = {
 export const SongsList = ({ songName }: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
-  const { data } = useQuery<UseQueryProps>(getSongsQuery(songName));
+  const { data, loading } = useQuery<UseQueryProps>(getSongsQuery(songName));
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
@@ -239,33 +195,49 @@ export const SongsList = ({ songName }: SongsListProps) => {
   return (
     <Container>
       <Title>Featured songs</Title>
-      <List>
-        {songs?.map((song) => (
-          <li key={song.id}>
-            <CardSong
-              image={song.image}
-              name={song.songName}
-              description={song.description}
-              genre={song.genre}
-              author={song.author}
-              isFavorite={song.isFavorite}
-              id={song.id}
-              toggleFavorite={toggleFavorite}
-              handleClickPlay={() =>
-                handleClickPlay(
-                  song.id,
-                  song.audio,
-                  song.image,
-                  song.isPlaying,
-                  song.songName,
-                  song.author,
-                )
-              }
-              isPlaying={song.isPlaying}
-            />
-          </li>
-        ))}
-      </List>
+      {loading ? (
+        <ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#22223D"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+          visible={true}
+        />
+      ) : (
+        <List>
+          {songs?.map((song) => (
+            <li key={song.id}>
+              <CardSong
+                image={song.image}
+                name={song.songName}
+                description={song.description}
+                genre={song.genre}
+                author={song.author}
+                isFavorite={song.isFavorite}
+                id={song.id}
+                toggleFavorite={toggleFavorite}
+                handleClickPlay={() =>
+                  handleClickPlay(
+                    song.id,
+                    song.audio,
+                    song.image,
+                    song.isPlaying,
+                    song.songName,
+                    song.author,
+                  )
+                }
+                isPlaying={song.isPlaying}
+              />
+            </li>
+          ))}
+        </List>
+      )}
       <AudioPlayer
         isPlaying={infoPlay.isPlayingSong}
         url={infoPlay.url}
