@@ -1,9 +1,10 @@
 import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 
+import { getSongsQuery } from './logic';
 import { Container, List, Title } from './styles';
 import type {
   InfoPlay,
@@ -12,36 +13,6 @@ import type {
   SongsListProps,
   UseQueryProps,
 } from './types';
-
-const getSongsQuery = (
-  name: string | number | readonly string[] | undefined,
-) => {
-  const SONGS_QUERY = gql`
-    {
-      songs(search: "${name}", sort: {}) {
-        pageMeta {
-          pages
-          total
-        }
-        songs {
-          description
-          genre
-          id
-          image
-          name
-          audio {
-            id
-            url
-          }
-          author {
-            name
-          }
-        }
-      }
-    }
-  `;
-  return SONGS_QUERY;
-};
 
 const infoPlayInitialState = {
   url: '',
@@ -154,6 +125,8 @@ export const SongsList = ({ songName }: SongsListProps) => {
     });
     toggleSelectedSongIsPlaying(songs[nextIndex]?.id || selectedId);
   };
+
+  //favorite
   const toggleFavorite = (selectedId: number) => {
     const modifiedSongsList = songs?.map((song) => {
       if (song.id === selectedId) {

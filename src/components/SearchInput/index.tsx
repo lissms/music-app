@@ -6,19 +6,16 @@ export const SearchInput = ({
   setSongName,
   placeholder,
   className,
-}: SearchInputProps) => {
-  console.log('songName', songName);
-  return (
-    <Container className={className}>
-      <SearchLineIcon />
-      <Input
-        name="search"
-        label="search"
-        hideLabel={true}
-        placeholder={placeholder}
-        value={songName}
-        onChange={(e) => setSongName(e.target.value)}
-      />
-    </Container>
-  );
-};
+}: SearchInputProps) => (
+  <Container className={className}>
+    <SearchLineIcon />
+    <Input
+      name="search"
+      label="search"
+      hideLabel={true}
+      placeholder={placeholder}
+      value={songName}
+      onChange={(e) => setSongName(e.target.value)}
+    />
+  </Container>
+);
