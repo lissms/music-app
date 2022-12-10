@@ -107,7 +107,6 @@ export const AudioPlayer = ({
           <Time>{getFormattedTime(currentTime)}</Time>
           <ProgressBar
             type="range"
-            defaultValue={0}
             value={currentTime}
             max={duration}
             onChange={onChangePlayingBar}
