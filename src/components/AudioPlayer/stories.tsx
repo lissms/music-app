@@ -1,7 +1,7 @@
 import type { Meta, Story } from '@storybook/react';
 
-import { CardSong } from '.';
-import type { CardSongProps } from './types';
+import { AudioPlayer } from '.';
+import type { AudioPlayerProps } from './types';
 
 const data = {
   image:
@@ -10,25 +10,27 @@ const data = {
   author: 'Ed Sheeran',
   description:
     'Faced with the trend of making the user spend as much time as possible in an app, our goal at Z1 is to create experiences that add up and that are built...',
-  genre: 'Rock',
+  url: 'https://d2s139ebbsksc4.cloudfront.net/Noel.mp3',
+  id: 17,
 };
-
 export default {
-  component: CardSong,
-  title: 'Core/CardSong',
+  component: AudioPlayer,
+  title: 'Core/AudioPlayer',
   args: {
-    isFavorite: false,
+    isPlaying: true,
+    url: data.url,
+    id: data.id,
     image: data.image,
     name: data.name,
-    description: data.description,
-    genre: data.genre,
     author: data.author,
-    onClick: () => {},
+    handleClickPlay: () => {},
+    handleClickNext: () => {},
+    handleClickBack: () => {},
   },
 } as Meta;
 
-const Template: Story<CardSongProps> = (args) => (
-  <CardSong {...args}></CardSong>
+const Template: Story<AudioPlayerProps> = (args) => (
+  <AudioPlayer {...args}></AudioPlayer>
 );
 
 export const Default = Template.bind({});
