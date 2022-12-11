@@ -5,7 +5,12 @@ import { Message } from '$/components/Message';
 import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 
-import { getSongsQuery } from './logic';
+import {
+  addToFavoriteList,
+  getMappedData,
+  getSongsQuery,
+  removeFromFavoritesList,
+} from './logic';
 import { Container, List, Title } from './styles';
 import type { Song, SongsListProps, UseQueryProps } from './types';
 import { useManageTrackControls } from './useManageTrackControls';
@@ -26,52 +31,17 @@ export const SongsList = ({ songName }: SongsListProps) => {
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
+    setSongs(getMappedData(songsList));
+  }, [data, setSongs]);
 
-    const localStorageList =
-      (JSON.parse(String(localStorage.getItem('idFavorite'))) as number[]) ||
-      [];
-
-    const mapperData = songsList?.map((song) => ({
-      audio: song.audio.url,
-      author: song.author.name,
-      description: song.description,
-      genre: song.genre.toLowerCase().replace('_', ' '),
-      id: song.id,
-      image: song.image,
-      songName: song.name,
-      isFavorite: localStorageList.some((id) => id === song.id),
-      isPlaying: false,
-    }));
-    setSongs(mapperData);
-  }, [data]);
-
-  //favorite
   const toggleFavorite = (selectedId: number) => {
     const modifiedSongsList = songs?.map((song) => {
       if (song.id === selectedId) {
         if (song.isFavorite) {
-          const favoriteIdList =
-            (JSON.parse(
-              String(localStorage.getItem('idFavorite')),
-            ) as number[]) || [];
-
-          const filteredFavoriteList = favoriteIdList.filter(
-            (id) => id !== selectedId,
-          );
-          localStorage.setItem(
-            'idFavorite',
-            JSON.stringify(filteredFavoriteList),
-          );
+          removeFromFavoritesList(selectedId);
         } else {
-          const favoriteIdList =
-            (JSON.parse(
-              String(localStorage.getItem('idFavorite')),
-            ) as number[]) || [];
-
-          favoriteIdList.push(selectedId);
-          localStorage.setItem('idFavorite', JSON.stringify(favoriteIdList));
+          addToFavoriteList(selectedId);
         }
-
         return {
           ...song,
           isFavorite: !song.isFavorite,
