@@ -1,13 +1,5 @@
 import { gql } from '@apollo/client';
 
-import type {
-  InfoPlay,
-  MappedSong,
-  Song,
-  SongsListProps,
-  UseQueryProps,
-} from './types';
-
 export const getSongsQuery = (
   name: string | number | readonly string[] | undefined,
 ) => {

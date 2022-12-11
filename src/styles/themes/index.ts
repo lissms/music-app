@@ -12,6 +12,7 @@ const theme = {
     grayscale50: '#F7F6F8',
     malibu100: '#E1F4FB',
     malibu500: '#88CFFB',
+    geraldine900: '#BF508B',
   },
   weight: {
     bold: 700,

@@ -106,8 +106,7 @@ export const ButtonPlay = styled.button`
   justify-content: center;
   align-items: center;
   margin-right: 0.75rem;
-  &:hover,
-  &:focus {
+  &:hover {
     animation: pulse 1s;
     box-shadow: 0 0 0 0.4rem ${({ theme }) => theme.color.grayscale300};
   }

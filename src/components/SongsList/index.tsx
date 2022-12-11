@@ -1,8 +1,9 @@
 import { AudioPlayer } from '$/components/AudioPlayer';
 import { CardSong } from '$/components/CardSong';
+import { Loader } from '$/components/Loader';
+import { Message } from '$/components/Message';
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
 
 import { getSongsQuery } from './logic';
 import { Container, List, Title } from './styles';
@@ -26,7 +27,9 @@ const infoPlayInitialState = {
 export const SongsList = ({ songName }: SongsListProps) => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
-  const { data, loading } = useQuery<UseQueryProps>(getSongsQuery(songName));
+  const { data, loading, error } = useQuery<UseQueryProps>(
+    getSongsQuery(songName),
+  );
 
   useEffect(() => {
     const songsList = data?.songs?.songs as Song[];
@@ -83,9 +86,10 @@ export const SongsList = ({ songName }: SongsListProps) => {
       author,
     });
   };
+
   const getNextIndex = (id: number | undefined): number => {
     const index = songs?.findIndex((song) => id === song.id);
-    if (songs?.length === index + 1) {
+    if (songs.length === index + 1) {
       return 0;
     } else {
       return index + 1;
@@ -168,20 +172,12 @@ export const SongsList = ({ songName }: SongsListProps) => {
   return (
     <Container>
       <Title>Featured songs</Title>
+      {error && <Message text="An error has occurred" />}
+      {songs?.length === 0 && loading === false ? (
+        <Message text="No data found for resourse with given identifier" />
+      ) : null}
       {loading ? (
-        <ThreeDots
-          height="80"
-          width="80"
-          radius="9"
-          color="#22223D"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-          visible={true}
-        />
+        <Loader />
       ) : (
         <List>
           {songs?.map((song) => (
