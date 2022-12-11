@@ -20,4 +20,5 @@ export const List = styled.ul`
   display: inline-block;
   width: 100%;
   list-style: none;
+  padding: 0;
 `;

@@ -14,6 +14,8 @@ export type AudioPlayerProps = {
     url: string,
     image: string,
     isPlayingSong: boolean,
+    name: string,
+    author: string,
   ) => void;
   handleClickNext: (selectedId: number) => void;
   handleClickBack: (selectedId: number) => void;

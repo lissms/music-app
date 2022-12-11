@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { InfoPlay, MappedSong } from './types';
 
@@ -15,21 +15,24 @@ export const useManageTrackControls = () => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
 
-  const toggleSelectedSongIsPlaying = (selectedId: number) => {
-    setSongs(
-      songs?.map((song) =>
-        song.id === selectedId
-          ? {
-              ...song,
-              isPlaying: !song.isPlaying,
-            }
-          : {
-              ...song,
-              isPlaying: false,
-            },
-      ),
-    );
-  };
+  const toggleSelectedSongIsPlaying = useCallback(
+    (selectedId: number) => {
+      setSongs(
+        songs?.map((song) =>
+          song.id === selectedId
+            ? {
+                ...song,
+                isPlaying: !song.isPlaying,
+              }
+            : {
+                ...song,
+                isPlaying: false,
+              },
+        ),
+      );
+    },
+    [songs],
+  );
 
   const handleClickPlay = (
     selectedId: number,
@@ -50,14 +53,17 @@ export const useManageTrackControls = () => {
     });
   };
 
-  const getNextIndex = (id: number | undefined): number => {
-    const index = songs?.findIndex((song) => id === song.id);
-    if (songs.length === index + 1) {
-      return 0;
-    } else {
-      return index + 1;
-    }
-  };
+  const getNextIndex = useCallback(
+    (id: number | undefined): number => {
+      const index = songs?.findIndex((song) => id === song.id);
+      if (songs.length === index + 1) {
+        return 0;
+      } else {
+        return index + 1;
+      }
+    },
+    [songs],
+  );
 
   const getBackIndex = (id: number | undefined): number => {
     const index = songs?.findIndex((song) => id === song.id);
@@ -81,18 +87,21 @@ export const useManageTrackControls = () => {
     toggleSelectedSongIsPlaying(songs[backIndex]?.id || selectedId);
   };
 
-  const handleClickNext = (selectedId: number): void => {
-    const nextIndex = getNextIndex(selectedId);
-    setInfoPlay({
-      selectedId: songs[nextIndex]?.id as number,
-      url: songs[nextIndex]?.audio as string,
-      image: songs[nextIndex]?.image as string,
-      isPlayingSong: true,
-      name: songs[nextIndex]?.songName as string,
-      author: songs[nextIndex]?.author as string,
-    });
-    toggleSelectedSongIsPlaying(songs[nextIndex]?.id || selectedId);
-  };
+  const handleClickNext = useCallback(
+    (selectedId: number): void => {
+      const nextIndex = getNextIndex(selectedId);
+      setInfoPlay({
+        selectedId: songs[nextIndex]?.id as number,
+        url: songs[nextIndex]?.audio as string,
+        image: songs[nextIndex]?.image as string,
+        isPlayingSong: true,
+        name: songs[nextIndex]?.songName as string,
+        author: songs[nextIndex]?.author as string,
+      });
+      toggleSelectedSongIsPlaying(songs[nextIndex]?.id || selectedId);
+    },
+    [getNextIndex, songs, toggleSelectedSongIsPlaying],
+  );
 
   return {
     songs,
