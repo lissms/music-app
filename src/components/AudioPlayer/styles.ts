@@ -36,13 +36,13 @@ export const ContainerProgressBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 75%;
 `;
 
 export const ProgressBar = styled.input`
   -webkit-appearance: none;
   margin-right: 15px;
-  width: 200px;
+  width: 100%;
   height: 7px;
   background: ${({ theme }) => theme.color.grayscale700};
   border-radius: 5px;
@@ -72,7 +72,7 @@ export const ProgressBar = styled.input`
   }
 
   ${from['mobile']} {
-    width: 29.75rem;
+    /* width: 29.75rem; */
   }
 `;
 
@@ -113,7 +113,6 @@ export const ContainerInfoImage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
 `;
 export const ContainerImage = styled.div<Playing>`
   background-size: cover;
@@ -125,12 +124,18 @@ export const ContainerImage = styled.div<Playing>`
   border-radius: 0.75rem;
 `;
 export const ContainerButton = styled.div`
-  width: 100%;
+  width: 8.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 0;
+  position: relative;
+  left: -4.25rem;
+`;
+export const ContainerButtonProgressBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
 `;
 export const ContainerInfo = styled.div`
   margin-left: 0.75rem;

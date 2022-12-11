@@ -1,7 +1,13 @@
 import BackIcon from '$/assets/icons/back.svg';
 import NextIcon from '$/assets/icons/next.svg';
 import PauseIcon from '$/assets/icons/pause.svg';
-import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { getFormattedTime } from './logic';
 import {
@@ -9,6 +15,7 @@ import {
   ButtonBackNext,
   Container,
   ContainerButton,
+  ContainerButtonProgressBar,
   ContainerImage,
   ContainerInfo,
   ContainerInfoImage,
@@ -56,9 +63,11 @@ export const AudioPlayer = ({
     return () => clearInterval(intervalId);
   }, [audioPlayerRef]);
 
-  const getNextSongAutomatically = () => {
-    audioPlayerRef.current?.ended ? handleClickNext(id) : null;
-  };
+  const getNextSongAutomatically = useCallback(() => {
+    if (audioPlayerRef.current?.ended) {
+      handleClickNext(id);
+    }
+  }, [handleClickNext, audioPlayerRef, id]);
 
   useEffect(() => {
     getNextSongAutomatically();
@@ -86,32 +95,38 @@ export const AudioPlayer = ({
           </ContainerInfo>
         </ContainerInfoImage>
 
-        <audio
-          ref={audioPlayerRef}
-          src={url}
-          onLoadedMetadata={handleLoadedMetadata}
-        />
-        <ContainerButton>
-          <ButtonBackNext onClick={() => handleClickBack(id)}>
-            <BackIcon />
-          </ButtonBackNext>
-          <Button onClick={() => handleClickPlay(id, url, image, isPlaying)}>
-            <PauseIcon />
-          </Button>
-          <ButtonBackNext onClick={() => handleClickNext(id)}>
-            <NextIcon />
-          </ButtonBackNext>
-        </ContainerButton>
-        <ContainerProgressBar>
-          <Time>{getFormattedTime(currentTime)}</Time>
-          <ProgressBar
-            type="range"
-            value={currentTime}
-            max={duration}
-            onChange={onChangePlayingBar}
+        <ContainerButtonProgressBar>
+          <audio
+            ref={audioPlayerRef}
+            src={url}
+            onLoadedMetadata={handleLoadedMetadata}
           />
-          <Time>{getFormattedTime(duration)}</Time>
-        </ContainerProgressBar>
+          <ContainerButton>
+            <ButtonBackNext onClick={() => handleClickBack(id)}>
+              <BackIcon />
+            </ButtonBackNext>
+            <Button
+              onClick={() =>
+                handleClickPlay(id, url, image, isPlaying, name, author)
+              }
+            >
+              <PauseIcon />
+            </Button>
+            <ButtonBackNext onClick={() => handleClickNext(id)}>
+              <NextIcon />
+            </ButtonBackNext>
+          </ContainerButton>
+          <ContainerProgressBar>
+            <Time>{getFormattedTime(currentTime)}</Time>
+            <ProgressBar
+              type="range"
+              value={currentTime}
+              max={duration}
+              onChange={onChangePlayingBar}
+            />
+            <Time>{getFormattedTime(duration)}</Time>
+          </ContainerProgressBar>
+        </ContainerButtonProgressBar>
       </ContainerPlay>
     </Container>
   );
