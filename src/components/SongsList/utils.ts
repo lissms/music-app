@@ -2,6 +2,8 @@ import { gql } from '@apollo/client';
 
 import { Song } from './types';
 
+const FAVORITE_KEY = 'idFavorite';
+
 export const getSongsQuery = (
   name: string | number | readonly string[] | undefined,
 ) => {
@@ -34,7 +36,7 @@ export const getSongsQuery = (
 
 export const getMappedData = (songsList: Song[]) => {
   const localStorageList =
-    (JSON.parse(String(localStorage.getItem('idFavorite'))) as number[]) || [];
+    (JSON.parse(String(localStorage.getItem(FAVORITE_KEY))) as number[]) || [];
 
   const mapperData = songsList?.map((song) => ({
     audio: song.audio.url,
@@ -52,16 +54,16 @@ export const getMappedData = (songsList: Song[]) => {
 
 export const removeFromFavoritesList = (selectedId: number) => {
   const favoriteIdList =
-    (JSON.parse(String(localStorage.getItem('idFavorite'))) as number[]) || [];
+    (JSON.parse(String(localStorage.getItem(FAVORITE_KEY))) as number[]) || [];
 
   const filteredFavoriteList = favoriteIdList.filter((id) => id !== selectedId);
-  localStorage.setItem('idFavorite', JSON.stringify(filteredFavoriteList));
+  localStorage.setItem(FAVORITE_KEY, JSON.stringify(filteredFavoriteList));
 };
 
 export const addToFavoriteList = (selectedId: number) => {
   const favoriteIdList =
-    (JSON.parse(String(localStorage.getItem('idFavorite'))) as number[]) || [];
+    (JSON.parse(String(localStorage.getItem(FAVORITE_KEY))) as number[]) || [];
 
   favoriteIdList.push(selectedId);
-  localStorage.setItem('idFavorite', JSON.stringify(favoriteIdList));
+  localStorage.setItem(FAVORITE_KEY, JSON.stringify(favoriteIdList));
 };

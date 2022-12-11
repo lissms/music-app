@@ -5,15 +5,15 @@ import { Message } from '$/components/Message';
 import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 
+import { useManageTrackControls } from './hooks';
+import { Container, List, Title } from './styles';
+import type { Song, SongsListProps, UseQueryProps } from './types';
 import {
   addToFavoriteList,
   getMappedData,
   getSongsQuery,
   removeFromFavoritesList,
-} from './logic';
-import { Container, List, Title } from './styles';
-import type { Song, SongsListProps, UseQueryProps } from './types';
-import { useManageTrackControls } from './useManageTrackControls';
+} from './utils';
 
 export const SongsList = ({ songName }: SongsListProps) => {
   const {

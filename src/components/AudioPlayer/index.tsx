@@ -1,15 +1,8 @@
 import BackIcon from '$/assets/icons/back.svg';
 import NextIcon from '$/assets/icons/next.svg';
 import PauseIcon from '$/assets/icons/pause.svg';
-import React, {
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
 
-import { getFormattedTime } from './logic';
+import { useAudioPlayer } from './hooks';
 import {
   Button,
   ButtonBackNext,
@@ -25,6 +18,7 @@ import {
   Time,
 } from './styles';
 import type { AudioPlayerProps } from './types';
+import { getFormattedTime } from './utils';
 
 export const AudioPlayer = ({
   isPlaying,
@@ -37,52 +31,13 @@ export const AudioPlayer = ({
   handleClickNext,
   handleClickBack,
 }: AudioPlayerProps) => {
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const audioPlayerRef = useRef<HTMLAudioElement>(null);
-
-  const togglePlay = (isSongLoaded: boolean, isSongPlaying: boolean) => {
-    if (isSongLoaded) {
-      if (isSongPlaying) {
-        void audioPlayerRef.current?.play();
-      } else {
-        audioPlayerRef.current?.pause();
-      }
-    }
-  };
-
-  useEffect(() => {
-    const isSongLoaded = duration > 0;
-    togglePlay(isSongLoaded, isPlaying);
-  }, [duration, isPlaying]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(audioPlayerRef.current?.currentTime || 0);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [audioPlayerRef]);
-
-  const getNextSongAutomatically = useCallback(() => {
-    if (audioPlayerRef.current?.ended) {
-      handleClickNext(id);
-    }
-  }, [handleClickNext, audioPlayerRef, id]);
-
-  useEffect(() => {
-    getNextSongAutomatically();
-  }, [audioPlayerRef.current?.ended, getNextSongAutomatically]);
-
-  const handleLoadedMetadata = (event: SyntheticEvent) => {
-    const target = event.target as HTMLAudioElement;
-    setDuration(target.duration);
-  };
-
-  const onChangePlayingBar = (event: SyntheticEvent) => {
-    const target = event.target as HTMLInputElement;
-    audioPlayerRef.current.currentTime = parseInt(target.value);
-    void audioPlayerRef.current?.play();
-  };
+  const {
+    duration,
+    currentTime,
+    audioPlayerRef,
+    handleLoadedMetadata,
+    onChangePlayingBar,
+  } = useAudioPlayer(isPlaying, id, handleClickNext);
 
   return (
     <Container isPlaying={isPlaying}>
