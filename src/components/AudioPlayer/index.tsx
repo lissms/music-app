@@ -65,6 +65,14 @@ export const AudioPlayer = ({
     return () => clearInterval(intervalId);
   }, [audioPlayerRef]);
 
+  const getNextSongAutomatically = () => {
+    audioPlayerRef.current?.ended ? handleClickNext(id) : null;
+  };
+
+  useEffect(() => {
+    getNextSongAutomatically();
+  }, [audioPlayerRef.current?.ended, getNextSongAutomatically]);
+
   const handleLoadedMetadata = (event: SyntheticEvent) => {
     const target = event.target as HTMLAudioElement;
     setDuration(target.duration);
