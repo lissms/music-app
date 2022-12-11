@@ -3,6 +3,7 @@ import NextIcon from '$/assets/icons/next.svg';
 import PauseIcon from '$/assets/icons/pause.svg';
 import React, { SyntheticEvent, useEffect, useRef, useState } from 'react';
 
+import { getFormattedTime } from './logic';
 import {
   Button,
   ButtonBackNext,
@@ -17,15 +18,6 @@ import {
   Time,
 } from './styles';
 import type { AudioPlayerProps } from './types';
-
-const getFormattedTime = (timeInSeconds: number): string => {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = Math.floor(timeInSeconds % 60);
-  const formmatedMinutes = minutes > 9 ? minutes : `0${minutes}`;
-  const formmatedSeconds = seconds > 9 ? seconds : `0${seconds}`;
-
-  return `${formmatedMinutes}:${formmatedSeconds}`;
-};
 
 export const AudioPlayer = ({
   isPlaying,
@@ -54,7 +46,6 @@ export const AudioPlayer = ({
 
   useEffect(() => {
     const isSongLoaded = duration > 0;
-
     togglePlay(isSongLoaded, isPlaying);
   }, [duration, isPlaying]);
 
