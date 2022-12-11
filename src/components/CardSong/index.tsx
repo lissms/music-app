@@ -43,7 +43,7 @@ export const CardSong = ({
           <ButtonPlay onClick={handleClickPlay}>
             {isPlaying ? <PauseIcon /> : <PlayIcon />}
           </ButtonPlay>
-          <Duration>{'-'} min</Duration>
+          <Duration>5 min</Duration>
           <Genre>
             <p className="genre">{genre}</p>
           </Genre>

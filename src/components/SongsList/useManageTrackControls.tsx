@@ -14,7 +14,7 @@ const infoPlayInitialState = {
 export const useManageTrackControls = () => {
   const [songs, setSongs] = useState<MappedSong[]>([]);
   const [infoPlay, setInfoPlay] = useState<InfoPlay>(infoPlayInitialState);
-  //toggleSelectedSong
+
   const toggleSelectedSongIsPlaying = (selectedId: number) => {
     setSongs(
       songs?.map((song) =>
@@ -31,7 +31,6 @@ export const useManageTrackControls = () => {
     );
   };
 
-  //handleClickPlay
   const handleClickPlay = (
     selectedId: number,
     url: string,
@@ -50,7 +49,7 @@ export const useManageTrackControls = () => {
       author,
     });
   };
-  // getNextIndex
+
   const getNextIndex = (id: number | undefined): number => {
     const index = songs?.findIndex((song) => id === song.id);
     if (songs.length === index + 1) {
@@ -60,7 +59,6 @@ export const useManageTrackControls = () => {
     }
   };
 
-  //getBackIndex
   const getBackIndex = (id: number | undefined): number => {
     const index = songs?.findIndex((song) => id === song.id);
     if (index === 0) {
@@ -70,7 +68,6 @@ export const useManageTrackControls = () => {
     }
   };
 
-  //handleClickBack
   const handleClickBack = (selectedId: number): void => {
     const backIndex = getBackIndex(selectedId);
     setInfoPlay({
@@ -84,7 +81,6 @@ export const useManageTrackControls = () => {
     toggleSelectedSongIsPlaying(songs[backIndex]?.id || selectedId);
   };
 
-  //handleClickNext
   const handleClickNext = (selectedId: number): void => {
     const nextIndex = getNextIndex(selectedId);
     setInfoPlay({

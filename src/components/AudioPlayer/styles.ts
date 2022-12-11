@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Playing } from './types';
 
 export const Container = styled.section<Playing>`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +36,7 @@ export const ContainerProgressBar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 40%;
 `;
 
 export const ProgressBar = styled.input`
@@ -123,10 +125,12 @@ export const ContainerImage = styled.div<Playing>`
   border-radius: 0.75rem;
 `;
 export const ContainerButton = styled.div`
-  width: 8.5rem;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: absolute;
+  left: 0;
 `;
 export const ContainerInfo = styled.div`
   margin-left: 0.75rem;

@@ -1,6 +1,3 @@
-import HeartAddIcon from '$/assets/icons/heart-add.svg';
-import HeartIcon from '$/assets/icons/heart.svg';
-import PauseIcon from '$/assets/icons/pause-white.svg';
 import React from 'react';
 
 import { Container, Text } from './styles';
