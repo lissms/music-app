@@ -16,7 +16,7 @@ function HomeView(): JSX.Element {
       <SearchInput
         songName={songName}
         setSongName={setSongName}
-        placeholder="Search by title, genre..."
+        placeholder="Search by title or author"
       />
       <SongsList songName={songName} />
     </Container>
