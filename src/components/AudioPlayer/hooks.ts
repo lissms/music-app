@@ -54,7 +54,9 @@ export const useAudioPlayer = (
 
   const onChangePlayingBar = (event: SyntheticEvent) => {
     const target = event.target as HTMLInputElement;
-    audioPlayerRef.current.currentTime = parseInt(target.value);
+    if (audioPlayerRef.current) {
+      audioPlayerRef.current.currentTime = parseInt(target.value);
+    }
     void audioPlayerRef.current?.play();
   };
 

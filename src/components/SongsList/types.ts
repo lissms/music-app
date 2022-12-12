@@ -27,7 +27,10 @@ export type Data = {
 };
 
 export type UseQueryProps = {
-  data: Data;
+  songs: {
+    pageMeta: PageMeta;
+    songs: SongDescriptions[];
+  };
   loading: boolean;
   error: ApolloError | undefined;
 };

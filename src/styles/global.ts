@@ -1,4 +1,3 @@
-import { prettyScrollbar } from '$/styles/utils/mixins';
 import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
 
